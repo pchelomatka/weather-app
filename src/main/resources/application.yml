@@ -1,6 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/schedule-app
+    url: jdbc:postgresql://localhost:5432/weather
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: postgres
+weather:
+  appid: b6858308fb7eac1cbcb80cf009c29b45
+  lang: ru
+  units: metric
+  exclude_day: hourly,alerts
+  exclude_week: hourly,alerts,current

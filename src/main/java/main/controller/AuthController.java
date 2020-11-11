@@ -24,4 +24,8 @@ public class AuthController {
     public void logout(@RequestParam String login, HttpServletResponse httpServletResponse) {
         authService.logout(login, httpServletResponse);
     }
+
+    @GetMapping(value = "/ping")
+    public void ping() {
+    }
 }

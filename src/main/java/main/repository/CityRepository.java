@@ -4,13 +4,10 @@ import main.entity.City;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface CityRepository extends CrudRepository<City, Integer> {
 
-    @Override
-    List<City> findAll();
+    City findByCity(String name);
 
     City findByLatAndLon(Double lat, Double lon);
 }

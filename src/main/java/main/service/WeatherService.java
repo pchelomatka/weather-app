@@ -2,9 +2,10 @@ package main.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import main.entity.*;
-import main.repository.AuthRepository;
-import main.repository.CityRepository;
+import main.entity.AdditionalParams;
+import main.entity.RequestWeather;
+import main.entity.ResponseWeather;
+import main.entity.ResponseWeatherWeek;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -14,13 +15,12 @@ import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @org.springframework.stereotype.Service
-public class Service {
+public class WeatherService {
 
     @Value("${weather.appid}")
     private String appId;
@@ -33,30 +33,10 @@ public class Service {
     @Value("${weather.exclude_week}")
     private String excludeWeek;
 
-    private final CityRepository cityRepository;
-    private final AuthRepository authRepository;
+    private final CityService cityService;
 
-    public Service(CityRepository cityRepository, AuthRepository authRepository) {
-        this.cityRepository = cityRepository;
-        this.authRepository = authRepository;
-    }
-
-    public void auth(RequestAuth requestAuth, HttpServletResponse httpServletResponse) {
-        Auth auth = authRepository.findByLogin(requestAuth.getLogin());
-        if (!(auth == null) && auth.getPassword().equals(requestAuth.getPassword())) {
-            auth.setAuthFlag(true);
-            authRepository.save(auth);
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        }
-    }
-
-    public void logout(String login, HttpServletResponse httpServletResponse) {
-        Auth auth = authRepository.findByLogin(login);
-        auth.setAuthFlag(false);
-        authRepository.save(auth);
-        httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+    public WeatherService(CityService cityService) {
+        this.cityService = cityService;
     }
 
     private UriComponentsBuilder createUri(RequestWeather requestWeather) {
@@ -92,7 +72,7 @@ public class Service {
         Map<String, Object> thirdMap = (Map<String, Object>) array.get(0);
         List<Object> arrayDays = (List<Object>) firstMap.get("daily");
 
-        responseWeather.setCity(getCity(requestWeather.getLat(), requestWeather.getLon()).getCity());
+        responseWeather.setCity(cityService.getCity(requestWeather.getLat(), requestWeather.getLon()).getCity());
 
         if (requestWeather.getDay() == null) {
             if (secondMap.get("temp") instanceof Integer) {
@@ -199,13 +179,5 @@ public class Service {
             arrayList.add(responseWeatherWeek);
         }
         return arrayList;
-    }
-
-    public List<City> getCities() {
-        return cityRepository.findAll();
-    }
-
-    private City getCity(Double lat, Double lon) {
-        return cityRepository.findByLatAndLon(lat, lon);
     }
 }

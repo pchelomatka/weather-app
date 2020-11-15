@@ -81,7 +81,7 @@ public class WeatherService {
                 responseWeather.setTemperature(Math.round((Double) secondMap.get("temp")));
             }
             responseWeather.setWeatherStatus(StringUtils.capitalize(thirdMap.get("description").toString()));
-            responseWeather.setWeatherIcon(thirdMap.get("main").toString().toLowerCase());
+            responseWeather.setWeatherIcon(thirdMap.get("icon").toString().toLowerCase());
             responseWeather.setFeelingBy(Math.round((Double) secondMap.get("feels_like")));
             if (secondMap.get("feels_like") instanceof Integer) {
                 responseWeather.setTemperature(((Integer) secondMap.get("feels_like")).longValue());
@@ -120,7 +120,7 @@ public class WeatherService {
                         responseWeather.setTemperature(Math.round((Double) tempMap.get("day")));
                     }
                     responseWeather.setWeatherStatus(StringUtils.capitalize(weatherMap.get("description").toString()));
-                    responseWeather.setWeatherIcon(weatherMap.get("main").toString().toLowerCase());
+                    responseWeather.setWeatherIcon(weatherMap.get("icon").toString().toLowerCase());
                     if (feelsLikeMap.get("day") instanceof Integer) {
                         responseWeather.setFeelingBy(((Integer) feelsLikeMap.get("day")).longValue());
                     } else {

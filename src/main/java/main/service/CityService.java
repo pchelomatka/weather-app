@@ -6,6 +6,9 @@ import main.entity.mappers.CityMapper;
 import main.repository.CityRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CityService {
 
@@ -17,8 +20,13 @@ public class CityService {
         this.cityMapper = cityMapper;
     }
 
-    public CityDTO getCityByName(String name) {
-        return cityMapper.cityToDTO(cityRepository.findByCity(name));
+    public List<CityDTO> getCityByName(String name) {
+        List<City> cities = cityRepository.findAllByCityContainingIgnoreCase(name);
+        List<CityDTO> cityDTOS = new ArrayList<>();
+        for(City city : cities){
+            cityDTOS.add(cityMapper.cityToDTO(city));
+        }
+        return cityDTOS;
     }
 
     public City getCity(Double lat, Double lon) {

@@ -178,6 +178,7 @@ public class WeatherService {
             }
             arrayList.add(responseWeatherWeek);
         }
+        arrayList.remove(0);
         return arrayList;
     }
 }

@@ -170,7 +170,7 @@ public class WeatherService {
             Map<String, Object> tempMap = (Map<String, Object>) innerMap.get("temp");
             responseWeatherWeek.setDate(innerMap.get("dt").toString());
             responseWeatherWeek.setWeatherStatus(StringUtils.capitalize(weatherMap.get("description").toString()));
-            responseWeatherWeek.setWeatherIcon(weatherMap.get("main").toString().toLowerCase());
+            responseWeatherWeek.setWeatherIcon(weatherMap.get("icon").toString().toLowerCase());
             if (tempMap.get("day") instanceof Integer) {
                 responseWeatherWeek.setTemperature(((Integer) tempMap.get("day")).longValue());
             } else {

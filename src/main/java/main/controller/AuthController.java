@@ -15,7 +15,7 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping(value = "/auth", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/auth_login", consumes = "application/json", produces = "application/json")
     public void auth(@RequestBody RequestAuth requestAuth, HttpServletResponse httpServletResponse) {
         authService.auth(requestAuth, httpServletResponse);
     }
